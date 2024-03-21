@@ -6,36 +6,30 @@
 def minOperations(n):
     '''Computes the fewest number of operations needed to result
     in exactly n H characters.
-
-    Args:
-        n (int): The desired number of H characters.
-
-    Returns:
-        int: The minimum number of operations required.
     '''
-
-    if n <= 1:
-        return n
-
-    operations = 0
-    current_char_count = 1  # Start with one 'H' character
-
-    while current_char_count < n:
-        if n % current_char_count == 0:
-            # Copy all characters and paste
-            operations += 2
-            current_char_count *= 2
-        else:
-            # Paste from clipboard
-            operations += 1
-            current_char_count += current_char_count
-
-    return operations
-
-
-if __name__ == "__main__":
-    n = 4
-    print("Min # of ops to reach {} char: {}".format(n, minOperations(n)))
-
-    n = 12
-    print("Min # of ops to reach {} char: {}".format(n, minOperations(n)))
+    if not isinstance(n, int):
+        return 0
+    ops_count = 0
+    clipboard = 0
+    done = 1
+    # print('H', end='')
+    while done < n:
+        if clipboard == 0:
+            # init (the first copy all and paste)
+            clipboard = done
+            done += clipboard
+            ops_count += 2
+            # print('-(11)->{}'.format('H' * done), end='')
+        elif n - done > 0 and (n - done) % done == 0:
+            # copy all and paste
+            clipboard = done
+            done += clipboard
+            ops_count += 2
+            # print('-(11)->{}'.format('H' * done), end='')
+        elif clipboard > 0:
+            # paste
+            done += clipboard
+            ops_count += 1
+            # print('-(01)->{}'.format('H' * done), end='')
+    # print('')
+    return ops_count
