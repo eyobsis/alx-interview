@@ -5,10 +5,12 @@ Log parsing
 
 import sys
 
+
 if __name__ == '__main__':
 
     file_size_total, line_count = 0, 0
-    http_status_codes = ["200", "301", "400", "401", "403", "404", "405", "500"]
+    codes = ["200", "301", "400", "401", "403", "404", "405", "500"]
+    http_status_codes = codes
     http_status_stats = {k: 0 for k in http_status_codes}
 
     def print_statistics(stats: dict, file_size: int) -> None:
