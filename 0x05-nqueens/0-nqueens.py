@@ -1,81 +1,68 @@
 #!/usr/bin/python3
 """
-Solution to the N-queens problem
+Solution to the nqueens problem
 """
 import sys
 
 
-def is_safe(row, col, n, cols, positive_diagonal, negative_diagonal):
+def backtrack(r, n, cols, pos, neg, board):
     """
-    Check if placing a queen at (row, col) is safe
+    backtrack function to find solution
     """
-    if col in cols or (row + col) in positive_diagonal or (row - col) in negative_diagonal:
-        return False
-    return True
-
-
-def place_queen(row, n, cols, positive_diagonal, negative_diagonal, board, solutions):
-    """
-    Place queens recursively
-    """
-    if row == n:
-        queens = []
-        for r in range(n):
-            for c in range(n):
-                if board[r][c] == 1:
-                    queens.append([r, c])
-        solutions.append(queens)
+    if r == n:
+        res = []
+        for l in range(len(board)):
+            for k in range(len(board[l])):
+                if board[l][k] == 1:
+                    res.append([l, k])
+        print(res)
         return
 
-    for col in range(n):
-        if is_safe(row, col, n, cols, positive_diagonal, negative_diagonal):
-            cols.add(col)
-            positive_diagonal.add(row + col)
-            negative_diagonal.add(row - col)
-            board[row][col] = 1
+    for c in range(n):
+        if c in cols or (r + c) in pos or (r - c) in neg:
+            continue
 
-            place_queen(row + 1, n, cols, positive_diagonal, negative_diagonal, board, solutions)
+        cols.add(c)
+        pos.add(r + c)
+        neg.add(r - c)
+        board[r][c] = 1
 
-            cols.remove(col)
-            positive_diagonal.remove(row + col)
-            negative_diagonal.remove(row - col)
-            board[row][col] = 0
+        backtrack(r+1, n, cols, pos, neg, board)
+
+        cols.remove(c)
+        pos.remove(r + c)
+        neg.remove(r - c)
+        board[r][c] = 0
 
 
 def nqueens(n):
     """
-    Solution to the N-queens problem
+    Solution to nqueens problem
     Args:
-        n (int): Number of queens. Must be >= 4.
-    Returns:
-        List of solutions, where each solution is a list of queen positions.
+        n (int): number of queens. Must be >= 4
+    Return:
+        List of lists representing coordinates of each
+        queen for all possible solutions
     """
-    if n < 4:
-        raise ValueError("N must be at least 4")
-
     cols = set()
-    positive_diagonal = set()
-    negative_diagonal = set()
-    board = [[0] * n for _ in range(n)]
-    solutions = []
+    pos_diag = set()
+    neg_diag = set()
+    board = [[0] * n for i in range(n)]
 
-    place_queen(0, n, cols, positive_diagonal, negative_diagonal, board, solutions)
-
-    return solutions
+    backtrack(0, n, cols, pos_diag, neg_diag, board)
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
+    n = sys.argv
+    if len(n) != 2:
         print("Usage: nqueens N")
         sys.exit(1)
-    
     try:
-        n = int(sys.argv[1])
-        solutions = nqueens(n)
-        for solution in solutions:
-            for queen in solution:
-                print(f"{queen[0]},{queen[1]}", end=" ")
-            print()
+        nn = int(n[1])
+        if nn < 4:
+            print("N must be at least 4")
+            sys.exit(1)
+        nqueens(nn)
     except ValueError:
         print("N must be a number")
         sys.exit(1)
