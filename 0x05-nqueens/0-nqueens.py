@@ -5,10 +5,11 @@ N-Queens Problem Solution
 
 import sys
 
+
 def backtrack(row, n, cols, pos_diag, neg_diag, board):
     """
     Backtracking function to find solutions to the N-Queens problem.
-    
+
     Args:
         row (int): Current row being processed.
         n (int): Size of the board and the number of queens.
@@ -45,6 +46,7 @@ def backtrack(row, n, cols, pos_diag, neg_diag, board):
         neg_diag.remove(row - col)
         board[row][col] = 0
 
+
 def nqueens(n):
     """
     Solves the N-Queens problem and prints solutions.
@@ -61,6 +63,7 @@ def nqueens(n):
     board = [[0] * n for _ in range(n)]
 
     backtrack(0, n, cols, pos_diag, neg_diag, board)
+
 
 if __name__ == "__main__":
     args = sys.argv
