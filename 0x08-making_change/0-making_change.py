@@ -15,9 +15,11 @@ def makeChange(coins, total):
     Returns:
         int: Minimum coins needed, or -1 if not possible.
     """
-    dp = [float('inf')] * (total + 1)
-    dp[0] = 0
-    for coin in coins:
-        for i in range(coin, total + 1):
-            dp[i] = min(dp[i], dp[i - coin] + 1)
-    return dp[total] if dp[total] != float('inf') else -1
+    mcn = [float('inf')] * (total + 1)
+    mcn[0] = 0
+    for i in range(1, total + 1):
+        for coin in coins:
+            if i >= coin:
+                mcn[i] = min(mcn[i], mcn[i - coin] + 1)
+    minimum_coins_needed = mcn[total] if mcn[total] != float('inf') else -1
+    return minimum_coins_needed
