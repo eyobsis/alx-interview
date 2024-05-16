@@ -6,38 +6,38 @@ Define the isWinner function, a solution to the Prime Game problem
 
 def primes(n):
     """Return a list of prime numbers between 1 and n inclusive."""
-    prime = []
-    sieve = [True] * (n + 1)
-    for p in range(2, n + 1):
-        if sieve[p]:
-            prime.append(p)
-            for i in range(p, n + 1, p):
-                sieve[i] = False
-    return prime
+    prime_list = []
+    sieve_list = [True] * (n + 1)
+    for num in range(2, n + 1):
+        if sieve_list[num]:
+            prime_list.append(num)
+            for multiple in range(num, n + 1, num):
+                sieve_list[multiple] = False
+    return prime_list
 
 
 def isWinner(x, nums):
     """
-    Determine the winner of the Prime Game.
+    Determine Game winner.
 
     Args:
-        x (int): Number of rounds of the game.
+        x (int): Number of game rounds.
         nums (list): List of upper limits of ranges for each round.
 
     Returns:
-        str: Name of the winner (Maria/Ben), / None if the winner
+        str: winner's Name (Maria/Ben), / None if the winner
     """
     if x is None or nums is None or x == 0 or nums == []:
         return None
-    Maria = Ben = 0
-    for i in range(x):
-        prime = primes(nums[i])
-        if len(prime) % 2 == 0:
-            Ben += 1
+    maria_score = ben_score = 0
+    for round_num in range(x):
+        primes_list = primes(nums[round_num])
+        if len(primes_list) % 2 == 0:
+            ben_score += 1
         else:
-            Maria += 1
-    if Maria > Ben:
+            maria_score += 1
+    if maria_score > ben_score:
         return "Maria"
-    elif Ben > Maria:
+    elif ben_score > maria_score:
         return "Ben"
     return None
